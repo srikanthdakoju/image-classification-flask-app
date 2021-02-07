@@ -6,4 +6,4 @@ sklearn
 scikit-image
 flask
 gunicorn
-
+joblib
