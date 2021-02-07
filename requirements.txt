@@ -3,7 +3,7 @@ pandas
 matplotlib
 scipy
 sklearn==0.23.2
-skimage=0.17.2
+skimage==0.17.2
 flask
 gunicorn
 
