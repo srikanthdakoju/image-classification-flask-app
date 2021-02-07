@@ -20,6 +20,10 @@ BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
+
+
+
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -76,6 +80,7 @@ def getheight(filepath):
     return h
 
 
+
 class rgb2gray_transform(BaseEstimator,TransformerMixin):
     import skimage.color
     def __init__(self):
@@ -114,7 +119,6 @@ le = pickle.load(open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb'))
 model = pickle.load(open(os.path.join(MODEL_PATH+'dsa_model_best_SVM.pickle'),'rb'))
 
 
-
 def top_five_results(image_path):
     img_test= skimage.io.imread(image_path)
     # image size is 80 x 80
@@ -139,5 +143,6 @@ def top_five_results(image_path):
 
     return prediction_dict
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
