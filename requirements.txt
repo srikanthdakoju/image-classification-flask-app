@@ -2,8 +2,9 @@ numpy
 pandas
 matplotlib
 scipy
-sklearn==0.23.2
-skimage==0.17.2
+sklearn
+skimage
 flask
 gunicorn
+Jinja
 
