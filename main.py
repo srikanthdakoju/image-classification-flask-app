@@ -116,7 +116,7 @@ class hogtransformer(BaseEstimator,TransformerMixin):
 
 
 le = pickle.load(open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb'))
-model = pickle.load(open(os.path.join(MODEL_PATH+'dsa_model_best_SVM.pickle'),'rb'))
+model = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_best_SVM.pickle'),'rb'))
 
 
 def top_five_results(image_path):
