@@ -13,6 +13,7 @@ import skimage.io
 import os
 from sklearn.base import BaseEstimator, TransformerMixin
 import scipy
+import joblib
 
 
 app = Flask(__name__)
@@ -116,7 +117,7 @@ class hogtransformer(BaseEstimator,TransformerMixin):
 
 
 le = pickle.load(open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb'))
-model = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_best_SVM.pickle'),'rb'))
+model = joblib.load(open(os.path.join(MODEL_PATH,'model_pipeline.joblib')))
 
 
 def top_five_results(image_path):
