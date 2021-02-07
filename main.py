@@ -116,8 +116,8 @@ class hogtransformer(BaseEstimator,TransformerMixin):
         return hfeatures
 
 
-le = joblib.load(open(os.path.join(MODEL_PATH,'labelenco.joblib')))
-model = joblib.load(open(os.path.join(MODEL_PATH,'model_pipeline.joblib')))
+le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
+model = joblib.load(os.path.join(MODEL_PATH,'model_pipeline.joblib'))
 
 
 def top_five_results(image_path):
