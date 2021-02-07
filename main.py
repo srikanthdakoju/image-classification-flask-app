@@ -116,7 +116,7 @@ class hogtransformer(BaseEstimator,TransformerMixin):
         return hfeatures
 
 
-le = joblib.load(open(os.path.join(MODEL_PATH,'labelencoder.pickle')))
+le = joblib.load(open(os.path.join(MODEL_PATH,'labelenco.joblib')))
 model = joblib.load(open(os.path.join(MODEL_PATH,'model_pipeline.joblib')))
 
 
