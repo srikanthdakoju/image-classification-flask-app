@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Image Classification App</title>
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <script src="/static/js/bootstrap.js"></script>
+        <script src="/static/js/jquery-3.5.1.js"></script>
+        <script src="/static/js/bootstrap.bundle.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#2C3E50">
+            <a class="navbar-brand" href="/">Image Classification</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/about">About</a>
+                </li>
+              </ul>
+              <a class="nav-link" href="#">
+                <img src="/static/images/logo.PNG" alt="data science" width=100 height=35>
+              </a>
+            </div>
+          </nav>
+    
+    {% block body %}
+    
+    {% endblock  %}
+
+    <div class="container">
+        <hr>
+        <footer>
+            Developed by <a href="http://www.datascienceanywhere.com">Data Science Anywhere Team</a>
+        </footer>
+
+    </div>
+    </body>
+    
+    
+</html>
+
+<!-- color codes: #A569BD purple -->

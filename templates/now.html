@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="container">
+    <br>
+    <h4>Machine Learning Based Image Classification Web App in Flask</h4>
+    <br>
+    <div id="myrow">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="upload-img" href="#upload-image" role="tab" data-toggle="tab" aria-selected="true">Upload Image</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="url" href="#enter-url" role="tab" data-toggle="tab" aria-selected="false">Enter URL</a>
+            </li>
+        </ul>
+
+        <!-- tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="upload-image" role="tabpanel" aria-labelledby="upload-img">
+                <div class="row">
+
+                    <div class="col">
+                        <form action="#" method="POST" enctype="multipart/form-data">
+                            <!-- File Input  -->
+                            <p>
+                                <input type="file" name="image_name" class="btn" style="background-color:#2471A3; color: #EBEDEF;" required>
+                            </p>
+                            <!-- Submit -->
+                            <p>
+                                <input type="submit" value="submit" class="btn" style="background-color:#2471A3; color:azure">
+                            </p>
+                            <p align="center">
+                                Only upload the file with extension ".png","jpg",".jpeg".
+                                For other image extension you <strong>redirect</strong> into error page
+                            </p>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="enter-url" role="tabpanel" aria-labelledby="url">
+                <div class="row">
+                    <div class="col">
+                        <form action="#" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="enterurl">Image URL</label>
+                                <input type="text" class="form-control" id="enterurl" name="img_url" placeholder="Enter the Image URL" aria-describedby="help" required>
+                                <small id="help" class="form-text text-muted"> Only enter the image url ended by ".png","jpg",".jpeg" </small>
+                                <br>
+                                <button class="btn" style="background-color: #2471A3; color:#EBEDEF">submit</button>
+                            </div>        
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <br>
+</div>
+
+<div class="container">
+    {% if fileupload %}
+        <div id="myrow_result">
+            <div class="row">
+                <div class="col col-8">
+                    <p>Top 5 prediction labels and confidence score </p>
+
+                    <table>
+                        <tr>
+                            <th>Classes</th>
+                            <th>Confidence score</th>
+                        </tr>
+                        {% for name, score in results.items()  %}
+                            
+                                <tr>
+                                    <td>{{ name }}</td>
+                                    <td>{{ score }}</td>
+                                </tr>                           
+                        
+                        {% endfor %}
+                    </table>
+
+                </div>
+                <div class="col col-4">              
+                    
+                    <img src="/static/upload/{{ image_name }}" alt="some thing went wrong" width=300  height="{{ h }}">
+                <br><br>
+                </div>
+            </div>            
+        </div>
+    {% endif %}
+</div>
+
+
+
+<style>
+    #myrow{
+        background-color: #EBEDEF;
+    }
+    #myrow_result{
+        background-color: #EBEDEF;
+        padding: 5%;
+        align-content: center;
+    }
+    table {
+        width:100%;
+        border-collapse: collapse;
+    }
+    table, td,th {
+        border: 1px solid black;
+        
+    }
+</style>
+
+{% endblock  %}
