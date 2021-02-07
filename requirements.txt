@@ -1,9 +1,9 @@
-flask
-gunicorn
-Jinja
 numpy
 pandas
 matplotlib
 scipy
 sklearn==0.24.1
 skimage==0.17.1
+flask
+gunicorn
+
