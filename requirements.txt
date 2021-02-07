@@ -3,7 +3,7 @@ pandas
 matplotlib
 scipy
 sklearn
-skimage
+scikit-image
 flask
 gunicorn
 Jinja
