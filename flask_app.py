@@ -13,7 +13,7 @@ import skimage.io
 import os
 import scipy
 import joblib
-from models import top_five_results
+from models import top_five_results, rgb2gray_transform, hogtransformer
 
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
@@ -21,8 +21,8 @@ MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
 
-model = joblib.externals.cloudpickle.load(open(os.path.join(MODEL_PATH,'model_save.pickle'),'rb'))
-label_encoder = joblib.externals.cloudpickle.load(open(os.path.join(MODEL_PATH,'model_label_encoder.pickle'),'rb'))
+model = joblib.load(os.path.join(MODEL_PATH,'model_save.pickle'))
+label_encoder = joblib.load(os.path.join(MODEL_PATH,'model_label_encoder.pickle'))
 
 
 @app.route('/about')
@@ -59,7 +59,7 @@ def index():
             filepath = os.path.join(UPLOAD_PATH,filename)
             skimage.io.imsave(filepath,img_arr)
             
-            res = top_five_results(model,le,filepath)
+            res = top_five_results(model,label_encoder,filepath)
             height_img = getheight(filepath)
             print(res,height_img)
             # save image
