@@ -20,7 +20,7 @@ BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
-
+le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
 
 
 
@@ -81,10 +81,6 @@ def getheight(filepath):
 
 
 
-le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
-model = joblib.load(os.path.join(MODEL_PATH,'model_pipeline.joblib'))
-
-
 def top_five_results(image_path):
     img_test= skimage.io.imread(image_path)
     # image size is 80 x 80
@@ -111,4 +107,10 @@ def top_five_results(image_path):
 
 
 if __name__ == '__main__':
+    # with open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb') as f:
+    
+
+    # with  as f:
+    model = pickle.load(open(os.path.join(MODEL_PATH,'model_pipeline_svm.pickle'),'rb'))
+    
     app.run()
