@@ -13,14 +13,13 @@ import skimage.io
 import os
 import scipy
 import joblib
-from models import rgb2gray_transform, hogtransformer
+from models import rgb2gray_transform, hogtransformer, top_five_results
 
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
-le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
 
 
 
@@ -40,7 +39,7 @@ def index():
             filepath = os.path.join(UPLOAD_PATH,filename)
             upload_file.save(filepath)
             print('name of the file =',filename)
-            res = top_five_results(filepath)
+            res = top_five_results(model,le,filepath)
             height_img = getheight(filepath)
             print(res,height_img)
             # except:
@@ -58,7 +57,7 @@ def index():
             filepath = os.path.join(UPLOAD_PATH,filename)
             skimage.io.imsave(filepath,img_arr)
             
-            res = top_five_results(filepath)
+            res = top_five_results(model,le,filepath)
             height_img = getheight(filepath)
             print(res,height_img)
             # save image
@@ -80,37 +79,12 @@ def getheight(filepath):
     return h
 
 
-
-def top_five_results(image_path):
-    img_test= skimage.io.imread(image_path)
-    # image size is 80 x 80
-    img_resize = skimage.transform.resize(img_test,(80,80))
-    # rescale into 255
-    img_rescale = np.array(255*img_resize).astype(np.uint8)
-    # machine leanring
-    img_reshape = img_rescale.reshape(-1,80,80,3)
-    pred = model.predict(img_reshape)[0]
-    val = le.inverse_transform(pred.flatten())
-    # Descision Function
-    distance = model.decision_function(img_reshape)[0]
-    # top 5 prediction
-    z = scipy.stats.zscore(distance)
-    pvals = scipy.special.softmax(z)
-    index = pvals.argsort()[-5:][::-1]
-    top_class = le.classes_[index]
-    score = np.round(pvals[index],2)
-    prediction_dict ={}
-    for i,j in zip(top_class,score):
-        prediction_dict.update({i:j})
-
-    return prediction_dict
-
-
 if __name__ == '__main__':
     # with open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb') as f:
     
 
     # with  as f:
     model = pickle.load(open(os.path.join(MODEL_PATH,'model_pipeline_svm.pickle'),'rb'))
+    le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
     
     app.run()

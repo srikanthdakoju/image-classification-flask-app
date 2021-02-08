@@ -2,7 +2,12 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 import skimage.color
 import skimage.feature
+import skimage.io
 import skimage
+import sklearn
+from sklearn.svm import SVC
+import scipy
+
 
 
 
@@ -38,3 +43,28 @@ class hogtransformer(BaseEstimator,TransformerMixin):
         
         hfeatures = np.array([local_hog(x) for x in X])
         return hfeatures
+
+
+def top_five_results(model,le,image_path):
+    img_test= skimage.io.imread(image_path)
+    # image size is 80 x 80
+    img_resize = skimage.transform.resize(img_test,(80,80))
+    # rescale into 255
+    img_rescale = np.array(255*img_resize).astype(np.uint8)
+    # machine leanring
+    img_reshape = img_rescale.reshape(-1,80,80,3)
+    pred = model.predict(img_reshape)[0]
+    val = le.inverse_transform(pred.flatten())
+    # Descision Function
+    distance = model.decision_function(img_reshape)[0]
+    # top 5 prediction
+    z = scipy.stats.zscore(distance)
+    pvals = scipy.special.softmax(z)
+    index = pvals.argsort()[-5:][::-1]
+    top_class = le.classes_[index]
+    score = np.round(pvals[index],2)
+    prediction_dict ={}
+    for i,j in zip(top_class,score):
+        prediction_dict.update({i:j})
+
+    return prediction_dict
