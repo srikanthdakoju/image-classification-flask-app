@@ -84,11 +84,11 @@ def getheight(filepath):
 
 
 
-if __name__ == '__main__':
-    # with open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb') as f:
+# if __name__ == '__main__':
+#     # with open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb') as f:
     
 
-    # with  as f:
+#     # with  as f:
     
     
-    app.run()
+#     app.run()
