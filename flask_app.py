@@ -20,8 +20,13 @@ BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
+def load_model(path):
+    if __name__ == "__main__":
+        model = joblib.load(path)
+        
+    return model
 
-model = joblib.load(os.path.join(MODEL_PATH,'model_save.pickle'))
+model = load_model(os.path.join(MODEL_PATH,'model_save_new.pickle'))
 label_encoder = joblib.load(os.path.join(MODEL_PATH,'model_label_encoder.pickle'))
 
 
