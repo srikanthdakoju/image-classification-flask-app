@@ -7,7 +7,7 @@ import skimage
 import sklearn
 from sklearn.svm import SVC
 import scipy
-
+import pickle
 
 
 
@@ -43,6 +43,19 @@ class hogtransformer(BaseEstimator,TransformerMixin):
         
         hfeatures = np.array([local_hog(x) for x in X])
         return hfeatures
+
+
+
+
+class CustomUnpickler(pickle.Unpickler):
+
+    def find_class(self, module, name):
+        if name == 'Manager':
+            from settings import Manager
+            return Manager
+        return super().find_class(module, name)
+
+
 
 
 def top_five_results(model,le,image_path):

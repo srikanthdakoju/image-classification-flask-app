@@ -13,15 +13,16 @@ import skimage.io
 import os
 import scipy
 import joblib
-from models import rgb2gray_transform, hogtransformer, top_five_results
+from models import rgb2gray_transform, hogtransformer, top_five_results, CustomUnpickler
 
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
-
-
+le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
+model = CustomUnpickler(open(os.path.join(
+    MODEL_PATH,'model_pipeline_svm.pickle'),'rb')).load()
 
 @app.route('/about')
 def about():
@@ -84,7 +85,6 @@ if __name__ == '__main__':
     
 
     # with  as f:
-    model = pickle.load(open(os.path.join(MODEL_PATH,'model_pipeline_svm.pickle'),'rb'))
-    le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
+    
     
     app.run()
