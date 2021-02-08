@@ -1,6 +1,8 @@
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
-
+import skimage.color
+import skimage.feature
+import skimage
 
 
 
