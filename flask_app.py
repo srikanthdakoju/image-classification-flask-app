@@ -21,10 +21,8 @@ MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
 
-model = joblib.externals.cloudpickle.load(open(
-    os.path.join(MODEL_PATH,'model_save.pickle'),'rb'))
-label_encoder = joblib.externals.cloudpickle.load(open(
-    os.path.join(MODEL_PATH,'model_label_encoder.pickle'),'rb'))
+model = joblib.externals.cloudpickle.load(open(os.path.join(MODEL_PATH,'model_save.pickle'),'rb'))
+label_encoder = joblib.externals.cloudpickle.load(open(os.path.join(MODEL_PATH,'model_label_encoder.pickle'),'rb'))
 
 
 @app.route('/about')
