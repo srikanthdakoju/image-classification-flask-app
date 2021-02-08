@@ -13,16 +13,15 @@ import skimage.io
 import os
 import scipy
 import joblib
-from models import top_five_results, rgb2gray_transform, hogtransformer
-
+from models import top_five_results
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
 def load_model(path):
-    if __name__ == "__main__":
-        model = joblib.load(path)
+    from models import rgb2gray_transform, hogtransformer
+    model = joblib.load(path)
         
     return model
 
