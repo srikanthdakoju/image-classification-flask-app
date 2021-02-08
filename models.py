@@ -47,13 +47,7 @@ class hogtransformer(BaseEstimator,TransformerMixin):
 
 
 
-class CustomUnpickler(pickle.Unpickler):
 
-    def find_class(self, module, name):
-        if name == 'Manager':
-            from settings import Manager
-            return Manager
-        return super().find_class(module, name)
 
 
 

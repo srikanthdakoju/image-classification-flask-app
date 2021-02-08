@@ -13,12 +13,20 @@ import skimage.io
 import os
 import scipy
 import joblib
-from models import rgb2gray_transform, hogtransformer, top_five_results, CustomUnpickler
+from models import rgb2gray_transform, hogtransformer, top_five_results
 
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
+
+class CustomUnpickler(pickle.Unpickler):
+    
+    def find_class(self, module, name):
+        if name == 'Manager':
+            from settings import Manager
+            return Manager
+        return super().find_class(module, name)
 
 le = joblib.load(os.path.join(MODEL_PATH,'labelenco.joblib'))
 model = CustomUnpickler(open(os.path.join(
@@ -78,6 +86,7 @@ def getheight(filepath):
     h = w* aspect
     
     return h
+
 
 
 if __name__ == '__main__':
