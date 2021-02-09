@@ -1,33 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for
 import numpy as np
 import sklearn
+from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import SGDClassifier
 from sklearn.svm import SVC
-import skimage.color
-import skimage.feature
+from skimage.color import rgb2gray
+from skimage.feature import hog
+import skimage.io
 import skimage.transform
 import pickle
-import skimage.io
 import os
 import scipy
-import joblib
-from models import top_five_results
+from utils import rgb2gray_transform, hogtransformer
+
 app = Flask(__name__)
 BASE_DIR = os.getcwd()
 MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
-def load_model(path):
-    from models import rgb2gray_transform, hogtransformer
-    model = joblib.load(path)
-        
-    return model
-
-model = load_model(os.path.join(MODEL_PATH,'model_save_new.pickle'))
-label_encoder = joblib.load(os.path.join(MODEL_PATH,'model_label_encoder.pickle'))
-
+model = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_best_sgd.pickle'),'rb'))
+pipe1 = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_pipe1.pickle'),'rb'))
+model_final = make_pipeline(pipe1,model)
 
 @app.route('/about')
 def about():
@@ -45,7 +40,7 @@ def index():
             filepath = os.path.join(UPLOAD_PATH,filename)
             upload_file.save(filepath)
             print('name of the file =',filename)
-            res = top_five_results(model,label_encoder,filepath)
+            res = top_five_results(model_final,filepath)
             height_img = getheight(filepath)
             print(res,height_img)
             # except:
@@ -63,7 +58,7 @@ def index():
             filepath = os.path.join(UPLOAD_PATH,filename)
             skimage.io.imsave(filepath,img_arr)
             
-            res = top_five_results(model,label_encoder,filepath)
+            res = top_five_results(model_final,filepath)
             height_img = getheight(filepath)
             print(res,height_img)
             # save image
@@ -74,7 +69,6 @@ def index():
         return render_template('now.html', fileupload=False)
 
 # Machine Learning Model
-
 def getheight(filepath):
     img = skimage.io.imread(filepath)
     height,width, _ = img.shape
@@ -85,12 +79,31 @@ def getheight(filepath):
     return h
 
 
+def top_five_results(model_final,image_path):
+    img_test= skimage.io.imread(image_path)
+    # image size is 80 x 80
+    img_resize = skimage.transform.resize(img_test,(80,80))
+    # rescale into 255
+    img_rescale = np.array(255*img_resize).astype(np.uint8)
+    # machine leanring
+    img_reshape = img_rescale.reshape(-1,80,80,3)
+    pred = model_final.predict(img_reshape)[0]
+    # Descision Function
+    distance = model_final.decision_function(img_reshape)[0]
+    # top 5 prediction
+    z = scipy.stats.zscore(distance)
+    pvals = scipy.special.softmax(z)
+    index = pvals.argsort()[-5:][::-1]
+    #
+    classes_ = model_final.classes_
+    top_class = classes_[index]
+    score = np.round(pvals[index],2)
+    prediction_dict ={}
+    for i,j in zip(top_class,score):
+        prediction_dict.update({i:j})
 
-# if __name__ == '__main__':
-#     # with open(os.path.join(MODEL_PATH,'labelencoder.pickle'),'rb') as f:
-    
+    return prediction_dict
 
-#     # with  as f:
+if __name__ == '__main__':
     
-    
-#     app.run()
+    app.run()
