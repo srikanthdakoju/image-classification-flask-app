@@ -2,7 +2,7 @@ numpy
 pandas
 matplotlib
 scipy
-sklearn-learn==0.23.2
+sklearn-learn
 scikit-image==0.17.2
 flask
 gunicorn
