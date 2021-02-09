@@ -21,8 +21,8 @@ MODEL_PATH = os.path.join(BASE_DIR,'static/models/')
 UPLOAD_PATH =os.path.join(BASE_DIR,'static/upload/')
 
 model = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_best_sgd.pickle'),'rb'))
-pipe1 = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_pipe1.pickle'),'rb'))
-model_final = make_pipeline(pipe1,model)
+scaler = pickle.load(open(os.path.join(MODEL_PATH,'dsa_model_standard_scaler.pickle'),'rb'))
+model_final = make_pipeline(rgb2gray_transform(),hogtransformer(cells_per_block=(2,2)),scaler,model)
 
 @app.route('/about')
 def about():
